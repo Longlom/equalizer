@@ -1,3 +1,3 @@
-#equalizer app for course work
+title: "equalizer app for course work"
 #using material-ui library
 #using audio...
