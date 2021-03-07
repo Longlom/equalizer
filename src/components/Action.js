@@ -1,17 +1,39 @@
 import { Fab, makeStyles, Tooltip } from "@material-ui/core/";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import StopIcon from "@material-ui/icons/Stop";
+import { useAudioContext } from "context/audioContext";
+
 const Action = () => {
   const classes = useStyles();
+  const { audioContext, audioElement } = useAudioContext();
+
   const [playing, setPlaying] = useState(false);
+
   const handlePlaying = () => {
+    if (audioContext.state === "suspended") {
+      audioContext.resume();
+    }
+    if (playing) audioElement.pause();
+    else {
+      audioElement.play();
+    }
     setPlaying(!playing);
   };
+
   const handleStop = () => {
+    audioElement.load();
     setPlaying(false);
   };
+
+  useEffect(() => {
+    audioElement.addEventListener("ended", () => setPlaying(false));
+    return () => {
+      audioElement.removeEventListener("ended", () => setPlaying(false));
+    };
+  }, []);
+
   return (
     <div className={classes.btns}>
       <Tooltip title={playing ? "Pause" : "Play"}>
@@ -29,7 +51,6 @@ const Action = () => {
           size="small"
           color="secondary"
           aria-label="stop"
-          disabled={!playing}
           onClick={handleStop}
         >
           <StopIcon />
@@ -41,7 +62,7 @@ const Action = () => {
 const useStyles = makeStyles({
   btns: {
     display: "flex",
-    gap: "1em",
+    gap: "0.5em",
   },
 });
 
