@@ -19,7 +19,6 @@ const Control = (props) => {
       setPlayerState("running");
     } else {
       const bufferSourceNode = new AudioBufferSourceNode(audioContext);
-      bufferSourceNode.buffer.length = 65536;
       const oscillatorNode = new OscillatorNode(audioContext, {
         type: "sine",
         frequency: 15,
