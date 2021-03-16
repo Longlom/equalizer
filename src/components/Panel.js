@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Slider, makeStyles, Typography } from "@material-ui/core/";
 
-const Panel = ({ frequency, gainNode }) => {
+const Panel = ({ frequency, filter }) => {
   const classes = useStyles();
-  const [volume, setVolume] = useState(1);
+  const [volume, setVolume] = useState(0);
   const handleSlide = (event, newValue) => {
     setVolume(newValue);
-    gainNode.gain.value = newValue;
+    filter.gain.value = newValue;
   };
   const valueFrequency = (frequency) => {
     if (frequency > 1000) return Math.round(frequency / 1000) + "kHz";
@@ -20,14 +20,14 @@ const Panel = ({ frequency, gainNode }) => {
       <Slider
         className={classes.slider}
         orientation="vertical"
-        min={0}
-        max={2}
-        step={0.02}
+        min={-20}
+        max={20}
+        step={1}
         value={volume}
         onChange={handleSlide}
       />
       <Typography align="center" variant="body2">
-        {Math.round(50 * volume) - 50 + "dB"}
+        {volume + "dB"}
       </Typography>
     </div>
   );

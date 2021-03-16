@@ -1,10 +1,11 @@
-import { Paper, Slider, Typography } from "@material-ui/core";
+import { Slider, Typography } from "@material-ui/core";
 import VolumeUp from "@material-ui/icons/VolumeUp";
-import { useAudioContext } from "context/audioContext";
+import { useAudioSchema } from "context/AudioSchema";
 import { useState } from "react";
 
 const Volume = () => {
-  const { gainNode } = useAudioContext();
+  const { listNodes } = useAudioSchema();
+  const { gainNode } = listNodes;
   const [volume, setVolume] = useState(1);
   const handleSliderChange = (event, newValue) => {
     setVolume(newValue);

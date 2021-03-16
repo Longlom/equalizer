@@ -1,10 +1,10 @@
 export const listBand = [
-  { frequency: 86 },
-  { frequency: 258 },
-  { frequency: 602 },
-  { frequency: 1290 },
-  { frequency: 2666 },
-  { frequency: 5418 },
-  { frequency: 10922 },
-  { frequency: 22000 },
+  { min: 0, max: 86 },
+  { min: 86, max: 258 },
+  { min: 258, max: 602 },
+  { min: 602, max: 1290 },
+  { min: 1290, max: 2666 },
+  { min: 2666, max: 5418 },
+  { min: 5418, max: 10922 },
+  { min: 10922, max: 22000 },
 ];
