@@ -1,4 +1,5 @@
 import { Switch, Typography } from "@material-ui/core";
+import { useAudioSchema } from "context/AudioSchema";
 import { useState } from "react";
 
 const Effect = ({ title, node }) => {
