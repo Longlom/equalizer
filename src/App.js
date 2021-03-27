@@ -2,6 +2,7 @@ import { makeStyles, Paper } from "@material-ui/core/";
 import Control from "components/Control";
 import Effect from "components/Effect";
 import FileLoader from "components/FileLoader";
+import Visualizer from "components/Visualizer";
 import Volume from "components/Volume";
 import { useAudioSchema } from "context/AudioSchema";
 import { useState } from "react";
@@ -13,15 +14,8 @@ function App() {
   const [file, setFile] = useState(null);
   const [sourceNode, setSourceNode] = useState({});
   const [playerState, setPlayerState] = useState(audioContext.state);
-
   return (
     <Paper elevation={3} className={classes.app}>
-      <FileLoader
-        sourceNode={sourceNode}
-        file={file}
-        setFile={setFile}
-        setPlayerState={setPlayerState}
-      />
       <ListPanel />
       <div className={classes.control}>
         <Control
@@ -34,16 +28,25 @@ function App() {
         <Volume />
       </div>
       <div className={classes.control}>
-        <Effect title="Vibrato" node={vibratoNode} />
-        <Effect title="Delay" node={delayNode} />
+        <FileLoader
+          sourceNode={sourceNode}
+          file={file}
+          setFile={setFile}
+          setPlayerState={setPlayerState}
+        />
+        <div className={classes.control}>
+          <Effect title="Vibrato" node={vibratoNode} />
+          <Effect title="Delay" node={delayNode} />
+        </div>
       </div>
+      <Visualizer playerState={playerState} />
     </Paper>
   );
 }
 const useStyles = makeStyles({
   app: {
     position: "absolute",
-    top: "40%",
+    top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     padding: "1em",
@@ -54,7 +57,7 @@ const useStyles = makeStyles({
   control: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     gap: "1em",
   },
 });
