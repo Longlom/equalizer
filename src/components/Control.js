@@ -3,7 +3,6 @@ import PauseIcon from "@material-ui/icons/Pause";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import StopIcon from "@material-ui/icons/Stop";
 import { useAudioSchema } from "context/AudioSchema";
-import * as metadata from "music-metadata";
 const Control = (props) => {
   const classes = useStyles();
   const { audioContext, listNodes } = useAudioSchema();
@@ -16,14 +15,6 @@ const Control = (props) => {
   } = props;
   const { shaperNode, vibratoNode, filterNodes } = listNodes;
 
-  const getName = async (bf) => {
-    try {
-      const medata = metadata.parseBuffer(bf, "audio/mpeg");
-      return medata;
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
   const handlePlayerState = async () => {
     if (playerState === "running") {
       audioContext.suspend();
@@ -38,19 +29,18 @@ const Control = (props) => {
         frequency: 15,
       });
       setSourceNode({ bufferSourceNode, oscillatorNode });
-
       oscillatorNode.connect(shaperNode).connect(vibratoNode.gain);
       bufferSourceNode.connect(filterNodes[0]);
+      bufferSourceNode.onended = () => {
+        setPlayerState("suspended");
+      };
 
-      oscillatorNode.start();
-      bufferSourceNode.start();
       const fileReader = new FileReader();
-
       fileReader.onload = async (e) => {
         const audioBuffer = await audioContext.decodeAudioData(e.target.result);
         bufferSourceNode.buffer = audioBuffer;
-        const meta = await getName(e.target.result);
-        console.log(meta);
+        oscillatorNode.start();
+        bufferSourceNode.start();
         audioContext.resume();
         setPlayerState("running");
       };
