@@ -22,7 +22,12 @@ const Effect = ({ title, node }) => {
         checked={underEffect}
         onChange={handleEffectChange}
       />
-      <Typography variant="body2">{title}</Typography>
+      <Typography
+        variant="caption"
+        color={underEffect ? "primary" : "textSecondary"}
+      >
+        {title}
+      </Typography>
     </div>
   );
 };
