@@ -1,11 +1,11 @@
-import { Button, makeStyles, Paper } from "@material-ui/core/";
+import { makeStyles, Paper } from "@material-ui/core/";
 import Control from "components/Control";
 import Effect from "components/Effect";
 import FileLoader from "components/FileLoader";
 import Visualizer from "components/Visualizer";
 import Volume from "components/Volume";
 import { useAudioSchema } from "context/AudioSchema";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ListPanel from "./components/ListPanel";
 function App() {
   const classes = useStyles();
@@ -14,11 +14,14 @@ function App() {
   const [file, setFile] = useState(null);
   const [sourceNode, setSourceNode] = useState({});
   const [playerState, setPlayerState] = useState(audioContext.state);
-  const handleClick = async () => {
+  const loadModule = async () => {
     await audioContext.audioWorklet.addModule(
       "ringbuffer/ring-buffer-worklet-processor.js"
     );
   };
+  useEffect(() => {
+    loadModule();
+  }, []);
   return (
     <Paper elevation={3} className={classes.app}>
       <ListPanel />
@@ -45,7 +48,6 @@ function App() {
         </div>
       </div>
       <Visualizer playerState={playerState} />
-      <Button onClick={handleClick}>Load</Button>
     </Paper>
   );
 }
