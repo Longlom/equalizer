@@ -31,10 +31,13 @@ const vibratoNode = new GainNode(audioContext, { gain: 0 });
 const shaperNode = new WaveShaperNode(audioContext, {
   curve: new Float32Array([0, 1]),
 });
+let analyser = audioContext.createAnalyser();
+analyser.fftSize = 512;
 
 gainNode.connect(audioContext.destination);
 gainNode.connect(vibratoNode);
 gainNode.connect(gainDelayNode);
+gainNode.connect(analyser);
 audioContext.suspend();
 
 ReactDOM.render(
@@ -49,6 +52,7 @@ ReactDOM.render(
           vibratoNode,
           shaperNode,
         },
+        analyser,
       }}
     >
       <App />
