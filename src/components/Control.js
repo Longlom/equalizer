@@ -30,7 +30,19 @@ const Control = (props) => {
       });
       setSourceNode({ bufferSourceNode, oscillatorNode });
       oscillatorNode.connect(shaperNode).connect(vibratoNode.gain);
-      bufferSourceNode.connect(filterNodes[0]);
+
+      const ringBufferWorkletNode = new AudioWorkletNode(
+        audioContext,
+        "ring-buffer-worklet-processor",
+        {
+          processorOptions: {
+            kernelBufferSize: 2048,
+            channelCount: 2,
+          },
+        }
+      );
+
+      bufferSourceNode.connect(ringBufferWorkletNode).connect(filterNodes[0]);
       bufferSourceNode.onended = () => {
         setPlayerState("suspended");
       };

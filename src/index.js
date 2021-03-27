@@ -33,7 +33,6 @@ const shaperNode = new WaveShaperNode(audioContext, {
 });
 let analyser = audioContext.createAnalyser();
 analyser.fftSize = 512;
-
 gainNode.connect(audioContext.destination);
 gainNode.connect(vibratoNode);
 gainNode.connect(gainDelayNode);

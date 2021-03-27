@@ -1,4 +1,4 @@
-import { makeStyles, Paper } from "@material-ui/core/";
+import { Button, makeStyles, Paper } from "@material-ui/core/";
 import Control from "components/Control";
 import Effect from "components/Effect";
 import FileLoader from "components/FileLoader";
@@ -14,6 +14,11 @@ function App() {
   const [file, setFile] = useState(null);
   const [sourceNode, setSourceNode] = useState({});
   const [playerState, setPlayerState] = useState(audioContext.state);
+  const handleClick = async () => {
+    await audioContext.audioWorklet.addModule(
+      "ringbuffer/ring-buffer-worklet-processor.js"
+    );
+  };
   return (
     <Paper elevation={3} className={classes.app}>
       <ListPanel />
@@ -40,6 +45,7 @@ function App() {
         </div>
       </div>
       <Visualizer playerState={playerState} />
+      <Button onClick={handleClick}>Load</Button>
     </Paper>
   );
 }
