@@ -20,13 +20,13 @@ const Panel = ({ frequency, filter }) => {
       <Slider
         className={classes.slider}
         orientation="vertical"
-        min={-20}
-        max={20}
+        min={-50}
+        max={50}
         step={1}
         value={volume}
         onChange={handleSlide}
       />
-      <Typography align="center" variant="body2">
+      <Typography align="center" variant="caption">
         {volume + "dB"}
       </Typography>
     </div>
