@@ -28,9 +28,6 @@ const Control = (props) => {
         type: "sine",
         frequency: 15,
       });
-      setSourceNode({ bufferSourceNode, oscillatorNode });
-      oscillatorNode.connect(shaperNode).connect(vibratoNode.gain);
-
       const ringBufferWorkletNode = new AudioWorkletNode(
         audioContext,
         "ring-buffer-worklet-processor",
@@ -41,9 +38,16 @@ const Control = (props) => {
           },
         }
       );
-
+      setSourceNode({
+        bufferSourceNode,
+        oscillatorNode,
+        ringBufferWorkletNode,
+      });
+      oscillatorNode.connect(shaperNode).connect(vibratoNode.gain);
       bufferSourceNode.connect(ringBufferWorkletNode).connect(filterNodes[0]);
+
       bufferSourceNode.onended = () => {
+        if (this === undefined) return;
         setPlayerState("suspended");
       };
 
@@ -63,9 +67,10 @@ const Control = (props) => {
   const handleStop = () => {
     sourceNode.oscillatorNode.stop();
     sourceNode.bufferSourceNode.stop();
+    sourceNode.ringBufferWorkletNode.disconnect(filterNodes[0]);
     setPlayerState("suspended");
   };
-
+  console.log(playerState);
   return (
     <div className={classes.btns}>
       <Tooltip title={playerState === "running" ? "Pause" : "Play"}>

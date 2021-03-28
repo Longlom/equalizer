@@ -21,6 +21,7 @@ function App() {
   };
   useEffect(() => {
     loadModule();
+    // eslint-disable-next-line
   }, []);
   return (
     <Paper elevation={3} className={classes.app}>
