@@ -30,7 +30,7 @@ class RingBufferWorkletProcessor extends AudioWorkletProcessor {
   process(inputs, outputs, parameters) {
     let input = inputs[0];
     let output = outputs[0];
-
+    if (input.length * output.length === 0) return false;
     this._inputRingBuffer.push(input);
 
     if (this._inputRingBuffer.framesAvailable >= this._kernelBufferSize) {
